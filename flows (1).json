@@ -1,0 +1,109 @@
+[
+    {
+        "id": "c983f21e351a870f",
+        "type": "tab",
+        "label": "Duress_tcp",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "6566bff5acd188c4",
+        "type": "tcp in",
+        "z": "c983f21e351a870f",
+        "name": "inception",
+        "server": "client",
+        "host": "192.168.40.132",
+        "port": "2000",
+        "datamode": "stream",
+        "datatype": "utf8",
+        "newline": "",
+        "topic": "",
+        "trim": false,
+        "base64": false,
+        "tls": "",
+        "x": 240,
+        "y": 420,
+        "wires": [
+            [
+                "53c25fb052a1ca39",
+                "0d3f30741f92db3a"
+            ]
+        ]
+    },
+    {
+        "id": "53c25fb052a1ca39",
+        "type": "debug",
+        "z": "c983f21e351a870f",
+        "name": "Message",
+        "active": false,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 370,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "0d3f30741f92db3a",
+        "type": "function",
+        "z": "c983f21e351a870f",
+        "name": "function 1",
+        "func": "//var newMsg = { payload: msg.payload };\n//return newMsg;\n\nlet pbs;\nlet newmsg;\nvar out1= msg.payload.replace(/ /g,\"\");\nvar output = out1.split(\"-\");\nmsg.payload = {\n        Zone: output[0],\n        Station: output[1],\n        Button: output[2],\n}\nreturn msg;\nif (msg.payload == \"Zone 2\") \n{\n        pbs = \"Zone 2 DG\";\n} \nelse if (msg.payload == \"Zone 1\") \n{\n        pbs = \"Zone 1 DG\";\n}\n//newmsg = { Zone: pbs, timestamp: new Date().toString(), status: \"pushed\", newmqq: \"hhk\" };\n //   node.send({ payload: newmsg });\n\n//node.done();\n//return item1;\n//return msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 360,
+        "wires": [
+            [
+                "7274e05389e78259",
+                "e5b1d63859b2771b"
+            ]
+        ]
+    },
+    {
+        "id": "7274e05389e78259",
+        "type": "debug",
+        "z": "c983f21e351a870f",
+        "name": "Function message",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 580,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "e5b1d63859b2771b",
+        "type": "csv",
+        "z": "c983f21e351a870f",
+        "name": "duress",
+        "sep": ",",
+        "hdrin": "",
+        "hdrout": "once",
+        "multi": "mult",
+        "ret": "\\r\\n",
+        "temp": "Name, PBS, Button",
+        "skip": "0",
+        "strings": false,
+        "include_empty_strings": "",
+        "include_null_values": "",
+        "x": 530,
+        "y": 300,
+        "wires": [
+            []
+        ]
+    }
+]
